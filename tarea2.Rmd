@@ -1,0 +1,33 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Ctrl+Shift+Enter*. 
+
+```{r}
+
+library(arules)
+
+data <- read.csv('PERSONA_BDP.csv', sep=",")
+
+
+data
+
+```
+
+```{r}
+
+
+data <- data[ , !(names(data) %in% c("PEA"))]
+data <- data[ , !(names(data) %in% c("POCUPA"))]
+data <- data[ , !(names(data) %in% c("PEI"))]
+
+reglas <- apriori(data, parameter = list(support=0.6, confidence=0.6))
+
+inspect(reglas[0:50])
+
+```
+
