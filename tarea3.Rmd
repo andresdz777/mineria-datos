@@ -1,0 +1,66 @@
+---
+title: "Tarea 3 Andres Diaz 999013647"
+output: html_notebook
+---
+
+
+```{r}
+
+data <- read.csv('MIGRACION_BDP.csv', sep=",")
+data <- subset(data, PEI5 != 9999)
+data
+
+```
+
+```{r}
+#REGLA 1
+
+data <- data[ , !(names(data) %in% c("PEA"))]
+data <- data[ , !(names(data) %in% c("POCUPA"))]
+data <- data[ , !(names(data) %in% c("PEI"))]
+
+datamsc <- subset(data, AREA == 2)
+
+datamsc2 <- datamsc[, c(9, 10, 11)]
+
+reglas <- fim4r(datamsc2, method = "fpgrowth", target = "rules", supp = .15, conf = .3)
+
+inspect(reglas[])
+
+```
+
+
+```{r}
+#REGLA 2
+
+data <- data[ , !(names(data) %in% c("PEA"))]
+data <- data[ , !(names(data) %in% c("POCUPA"))]
+data <- data[ , !(names(data) %in% c("PEI"))]
+
+datamsc <- subset(data, PEI3 >= 1 )
+
+datamsc2 <- datamsc[, c(1, 10,11)]
+
+reglas <- fim4r(datamsc2, method = "fpgrowth", target = "rules", supp = .2, conf = .3)
+
+inspect(reglas[])
+```
+
+```{r}
+
+#REGLA 3
+
+data <- data[ , !(names(data) %in% c("PEA"))]
+data <- data[ , !(names(data) %in% c("POCUPA"))]
+data <- data[ , !(names(data) %in% c("PEI"))]
+
+datamsc <- subset(data, DEPARTAMENTO == 1 )
+
+datamsc2 <- datamsc[, c(9, 10,11)]
+
+reglas <- fim4r(datamsc2, method = "fpgrowth", target = "rules", supp = .2, conf = .3)
+
+inspect(reglas[])
+
+```
+
