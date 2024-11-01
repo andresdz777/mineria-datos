@@ -1,0 +1,68 @@
+---
+title: "Tarea 4 Andres Diaz 999013647"
+output: html_notebook
+---
+
+
+```{r}
+library(ggplot2)
+data <- read.csv('MIGRACION_BDP.csv', sep=",")
+data <- subset(data, PEI5 != 9999)
+data
+
+```
+
+```{r}
+#REGLA 1
+
+data <- data[ , !(names(data) %in% c("PEA"))]
+data <- data[ , !(names(data) %in% c("POCUPA"))]
+data <- data[ , !(names(data) %in% c("PEI"))]
+
+datamsc <- subset(data, AREA == 2)
+
+datamsc2 <- datamsc[, c(9, 10, 11)]
+
+reglas <- fim4r(datamsc2, method = "fpgrowth", target = "rules", supp = .15, conf = .3)
+
+inspect(reglas[])
+
+cluster <- kmeans(datamsc2, centers=9)
+
+ggplot(datamsc2, aes(x=PEI4 ,y=PEI3, color = as.factor(cluster$cluster)))+
+  geom_point()+
+  geom_point(data = as.data.frame(cluster$centers), aes(x=PEI4 ,y=PEI3), , color="black", size =4, shape=17)+
+  labs(title = "edad vs genero")+
+  theme_minimal()
+  
+```
+
+
+```{r}
+
+#REGLA 3
+
+data <- data[ , !(names(data) %in% c("PEA"))]
+data <- data[ , !(names(data) %in% c("POCUPA"))]
+data <- data[ , !(names(data) %in% c("PEI"))]
+
+datamsc <- subset(data, DEPARTAMENTO == 1 )
+
+datamsc2 <- datamsc[, c(9, 10,11)]
+
+reglas <- fim4r(datamsc2, method = "fpgrowth", target = "rules", supp = .2, conf = .3)
+
+inspect(reglas[])
+
+cluster <- kmeans(datamsc2, centers=9)
+
+ggplot(datamsc2, aes(x=PEI4 ,y=PEI3, color = as.factor(cluster$cluster)))+
+  geom_point()+
+  geom_point(data = as.data.frame(cluster$centers), aes(x=PEI4 ,y=PEI3), , color="black", size =4, shape=17)+
+  labs(title = "edad vs genero")+
+  theme_minimal()
+  
+  
+
+```
+
